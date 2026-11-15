@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Chitti Kanna!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            /* Background image loads immediately */
+            background-image: url('Background.jpg');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000; /* Fallback color */
+        }
+
+        #dudu {
+            opacity: 0;
+            transform: scale(0.1);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy pop-in effect */
+            max-width: 90%;
+            max-height: 80vh;
+            z-index: 10;
+        }
+
+        /* Class added via JavaScript after 1 second */
+        #dudu.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Falling decoration styles */
+        .decoration {
+            position: absolute;
+            top: -20px;
+            z-index: 5;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dudu Image -->
+    <img id="dudu" src="Dudu.jpg" alt="Dudu peeping">
+
+    <script>
+        // 1. Wait 1 second (1000ms), then show Dudu and start decorations
+        setTimeout(() => {
+            document.getElementById('dudu').classList.add('show');
+            startDecorations();
+        }, 1000);
+
+        // 2. Function to create falling decorations
+        function startDecorations() {
+            const colors = ['#ff69b4', '#ffd700', '#ff4500', '#ffffff', '#ffb6c1'];
+            
+            // Generate a new decoration every 50 milliseconds
+            const decorationInterval = setInterval(() => {
+                const shape = document.createElement('div');
+                shape.classList.add('decoration');
+                
+                // Randomize size, color, starting position, and falling speed
+                const size = Math.random() * 15 + 10; // Between 10px and 25px
+                shape.style.width = size + 'px';
+                shape.style.height = size + 'px';
+                shape.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                shape.style.left = Math.random() * 100 + 'vw';
+                
+                // Make half of them circles, half squares
+                if (Math.random() > 0.5) shape.style.borderRadius = '50%';
+                
+                // Randomize fall duration between 2 and 3 seconds
+                const fallDuration = Math.random() * 1 + 2; 
+                shape.style.animationDuration = fallDuration + 's';
+                
+                document.body.appendChild(shape);
+
+                // Clean up the DOM element after it falls
+                setTimeout(() => shape.remove(), fallDuration * 1000);
+            }, 50);
+
+            // 3. Stop generating new decorations after 3 seconds (3000ms)
+            setTimeout(() => {
+                clearInterval(decorationInterval);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
