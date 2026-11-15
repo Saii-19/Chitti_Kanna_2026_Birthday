@@ -11,7 +11,7 @@
             padding: 0;
             height: 100vh;
             /* Constant background image */
-            background-image: url('Background.jpg');
+            background-image: url('Gemini_Generated_Image_kyw72ikyw72ikyw7.png_2.jpg');
             background-size: cover;
             background-position: center;
             overflow: hidden;
@@ -23,7 +23,6 @@
         }
 
         /* --- Page Containers --- */
-        /* Each 'page' is a container that takes up the full screen */
         .page {
             position: absolute;
             top: 0;
@@ -34,16 +33,28 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            opacity: 0; /* Hidden by default */
-            pointer-events: none; /* Can't click when hidden */
-            transition: opacity 1s ease-in-out; /* Smooth fade transitions */
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 1s ease-in-out; 
             z-index: 10;
         }
 
-        /* The active page is fully visible and clickable */
         .page.active {
             opacity: 1;
             pointer-events: auto;
+        }
+
+        /* --- Zoom In Entry Animation (Long back to front) --- */
+        /* Targets the direct children (images, text boxes, cards) of the page */
+        .page > * {
+            opacity: 0;
+            transform: scale(0.1); /* Starts far in the back */
+            transition: opacity 1s ease-in-out, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .page.active > * {
+            opacity: 1;
+            transform: scale(1); /* Brings to the front */
         }
 
         /* --- Images --- */
@@ -53,20 +64,11 @@
             object-fit: contain;
         }
 
-        /* Specific animation for the first image */
-        #dudu-main {
-            transform: scale(0.1);
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .page.active #dudu-main {
-            transform: scale(1);
-        }
-
-        /* Gift shrinking animation */
-        .shrink {
-            transform: scale(0);
-            transition: transform 1s ease-in-out;
-            opacity: 0;
+        /* Gift shrinking animation (overrides the zoom-in when clicked) */
+        .page.active .shrink {
+            transform: scale(0) !important;
+            opacity: 0 !important;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out !important;
         }
 
         /* Flash effect class */
@@ -81,7 +83,7 @@
 
         /* --- Text Boxes & Buttons --- */
         .text-box {
-            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+            background-color: rgba(255, 255, 255, 0.75); 
             padding: 15px 25px;
             border-radius: 15px;
             margin-top: 20px;
@@ -94,7 +96,34 @@
             color: #333;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             max-width: 80%;
-            transition: opacity 0.5s ease;
+        }
+
+        /* --- New Couple Card (Page 4) --- */
+        .couple-card {
+            background-color: rgba(255, 255, 255, 0.75); /* White semi-transparent */
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            max-width: 85%;
+            text-align: center;
+        }
+        
+        .couple-card img {
+            border-radius: 10px; /* Slight rounding to match the card */
+            max-height: 55vh;
+        }
+
+        .couple-card .card-text {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         /* Button Styling */
@@ -118,20 +147,19 @@
             transform: scale(0.95);
         }
 
-        /* Special styling for the emoji buttons to look like buttons */
         .emoji-btn {
             background-color: #f1f2f6;
             font-size: 24px;
             padding: 8px 15px;
             border-radius: 50%;
             box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-            color: initial; /* Use default emoji color */
+            color: initial; 
         }
         .emoji-btn:hover {
             background-color: #dfe4ea;
         }
 
-        /* --- Confetti Animations (from previous step) --- */
+        /* --- Confetti Animations --- */
         .decoration {
             position: absolute;
             top: -20px;
@@ -148,7 +176,7 @@
 
     <!-- ================= PAGE 1 ================= -->
     <div id="page1" class="page">
-        <img id="dudu-main" src="Dudu.png" alt="Dudu">
+        <img src="Dudu Cutout_2.jpg" alt="Dudu">
         
         <div class="text-box">
             <span>Gift kosam ikkada click chey ve 👉🏻</span>
@@ -158,7 +186,7 @@
 
     <!-- ================= PAGE 2 ================= -->
     <div id="page2" class="page">
-        <img id="dudu-gift" src="Dudu_Gift.png" alt="Dudu with Gift" style="cursor:pointer;" onclick="openGift()">
+        <img id="dudu-gift" src="Dudu_Gift.jpg" alt="Dudu with Gift" style="cursor:pointer;" onclick="openGift()">
         
         <div id="text-box-2" class="text-box">
             <span>Neeku iddham anukune lope naaku oka Gift dorikindi ve, lopala emundo choodham, Gift Box paina click chey ve 😍</span>
@@ -175,22 +203,23 @@
         </div>
     </div>
 
-    <!-- ================= PAGE 4 (Couple) ================= -->
+    <!-- ================= PAGE 4 (Couple Card) ================= -->
     <div id="page4" class="page">
-        <img src="Couple.jpg" alt="Couple Image">
-        
-        <div class="text-box" style="flex-direction: column; gap: 10px;">
-            <span>Next year nee birthday ni celebrate cheskoni ila bajjundam ve 🫶🏻❤️</span>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span>Last oka sari click chey ve, emundho chooddam 👉🏻</span>
-                <button class="emoji-btn" onclick="goToPage(5)">🧐</button>
+        <div class="couple-card">
+            <img src="Couple.jpg" alt="Couple Image">
+            <div class="card-text">
+                <span>Next year nee birthday ni celebrate cheskoni ila bajjundam ve 🫶🏻❤️</span>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>Last oka sari click chey ve, emundho chooddam 👉🏻</span>
+                    <button class="emoji-btn" onclick="goToPage(5)">🧐</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- ================= PAGE 5 (Final) ================= -->
     <div id="page5" class="page">
-        <img src="Dudu_Bubu_Final_Page.png" alt="Dudu and Bubu Final">
+        <img src="Dudu_Bubu_Final_Page.jpg" alt="Dudu and Bubu Final">
         
         <div class="text-box">
             <span>Love you for life, naa prema motham neeke ve naa Chitti Kanna ❤️</span>
@@ -199,55 +228,44 @@
 
     <!-- ================= SCRIPT ================= -->
     <script>
-        // Start by showing page 1 and dropping confetti after 1 second
         setTimeout(() => {
             document.getElementById('page1').classList.add('active');
             startDecorations();
         }, 1000);
 
-        // Function to smoothly transition between pages
         function goToPage(pageNumber) {
-            // Hide all pages
             const pages = document.querySelectorAll('.page');
             pages.forEach(page => page.classList.remove('active'));
 
-            // Show the target page after a tiny delay to allow fade out
             setTimeout(() => {
                 document.getElementById('page' + pageNumber).classList.add('active');
             }, 100); 
         }
 
-        // Special function for the gift opening animation on Page 2
         function openGift() {
             const giftImg = document.getElementById('dudu-gift');
             const textBox2 = document.getElementById('text-box-2');
             
-            // 1. Shrink and fade the gift and text box
+            // Trigger shrink out animation
             giftImg.classList.add('shrink');
             textBox2.style.opacity = '0';
 
-            // 2. Wait for shrink animation to finish (1 second), then transition to Page 3
             setTimeout(() => {
-                // Hide page 2 completely
                 document.getElementById('page2').classList.remove('active');
                 
-                // Show page 3
                 const page3 = document.getElementById('page3');
                 page3.classList.add('active');
                 
-                // Add flash effect to the newly revealed image
                 const revealImg = document.getElementById('reveal-img');
                 revealImg.classList.add('flash');
                 
-                // Remove flash class after it plays so it doesn't get stuck
                 setTimeout(() => {
                     revealImg.classList.remove('flash');
                 }, 500);
 
-            }, 1000); // 1000ms matches the CSS transition time
+            }, 1000); 
         }
 
-        // Confetti function (same as before)
         function startDecorations() {
             const colors = ['#ff69b4', '#ffd700', '#ff4500', '#ffffff', '#ffb6c1'];
             
