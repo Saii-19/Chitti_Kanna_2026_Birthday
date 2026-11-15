@@ -5,44 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Chitti Kanna!</title>
     <style>
+        /* --- General Styling & Background --- */
         body {
             margin: 0;
             padding: 0;
             height: 100vh;
-            /* Background image loads immediately */
-            background-image: url('Background.jpg');
+            /* Constant background image */
+            background-image: url('Gemini_Generated_Image_kyw72ikyw72ikyw7.png_2.jpg');
             background-size: cover;
             background-position: center;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000; /* Fallback color */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
         }
 
-        #dudu {
-            opacity: 0;
-            transform: scale(0.1);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy pop-in effect */
-            max-width: 90%;
-            max-height: 80vh;
+        /* --- Page Containers --- */
+        /* Each 'page' is a container that takes up the full screen */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; /* Hidden by default */
+            pointer-events: none; /* Can't click when hidden */
+            transition: opacity 1s ease-in-out; /* Smooth fade transitions */
             z-index: 10;
         }
 
-        /* Class added via JavaScript after 1 second */
-        #dudu.show {
+        /* The active page is fully visible and clickable */
+        .page.active {
             opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- Images --- */
+        img {
+            max-width: 90%;
+            max-height: 60vh;
+            object-fit: contain;
+        }
+
+        /* Specific animation for the first image */
+        #dudu-main {
+            transform: scale(0.1);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .page.active #dudu-main {
             transform: scale(1);
         }
 
-        /* Falling decoration styles */
+        /* Gift shrinking animation */
+        .shrink {
+            transform: scale(0);
+            transition: transform 1s ease-in-out;
+            opacity: 0;
+        }
+
+        /* Flash effect class */
+        .flash {
+            animation: whiteFlash 0.5s ease-out;
+        }
+        @keyframes whiteFlash {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(3); }
+            100% { filter: brightness(1); }
+        }
+
+        /* --- Text Boxes & Buttons --- */
+        .text-box {
+            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 80%;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #ff6b81;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        button:hover {
+            background-color: #ff4757;
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Special styling for the emoji buttons to look like buttons */
+        .emoji-btn {
+            background-color: #f1f2f6;
+            font-size: 24px;
+            padding: 8px 15px;
+            border-radius: 50%;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            color: initial; /* Use default emoji color */
+        }
+        .emoji-btn:hover {
+            background-color: #dfe4ea;
+        }
+
+        /* --- Confetti Animations (from previous step) --- */
         .decoration {
             position: absolute;
             top: -20px;
             z-index: 5;
             animation: fall linear forwards;
         }
-
         @keyframes fall {
             0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
@@ -51,46 +146,131 @@
 </head>
 <body>
 
-    <!-- Dudu Image -->
-    <img id="dudu" src="Dudu.png" alt="Dudu peeping">
+    <!-- ================= PAGE 1 ================= -->
+    <div id="page1" class="page">
+        <img id="dudu-main" src="Dudu Cutout_2.jpg" alt="Dudu">
+        
+        <div class="text-box">
+            <span>Gift kosam ikkada click chey ve 👉🏻</span>
+            <button onclick="goToPage(2)">Gift🎁</button>
+        </div>
+    </div>
 
+    <!-- ================= PAGE 2 ================= -->
+    <div id="page2" class="page">
+        <img id="dudu-gift" src="Dudu_Gift.jpg" alt="Dudu with Gift" style="cursor:pointer;" onclick="openGift()">
+        
+        <div id="text-box-2" class="text-box">
+            <span>Neeku iddham anukune lope naaku oka Gift dorikindi ve, lopala emundo choodham, Gift Box paina click chey ve 😍</span>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3 (Reveal) ================= -->
+    <div id="page3" class="page">
+        <img id="reveal-img" src="Reveal.png" alt="Reveal Image">
+        
+        <div class="text-box">
+            <span>Naaku dorikina pedha Gift Chitti ne ve 🥰💕, sare oka sari ikkada click chey 👉🏻</span>
+            <button class="emoji-btn" onclick="goToPage(4)">🧐</button>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 4 (Couple) ================= -->
+    <div id="page4" class="page">
+        <img src="Couple.jpg" alt="Couple Image">
+        
+        <div class="text-box" style="flex-direction: column; gap: 10px;">
+            <span>Next year nee birthday ni celebrate cheskoni ila bajjundam ve 🫶🏻❤️</span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span>Last oka sari click chey ve, emundho chooddam 👉🏻</span>
+                <button class="emoji-btn" onclick="goToPage(5)">🧐</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 5 (Final) ================= -->
+    <div id="page5" class="page">
+        <img src="Dudu_Bubu_Final_Page.jpg" alt="Dudu and Bubu Final">
+        
+        <div class="text-box">
+            <span>Love you for life, naa prema motham neeke ve naa Chitti Kanna ❤️</span>
+        </div>
+    </div>
+
+    <!-- ================= SCRIPT ================= -->
     <script>
-        // 1. Wait 1 second (1000ms), then show Dudu and start decorations
+        // Start by showing page 1 and dropping confetti after 1 second
         setTimeout(() => {
-            document.getElementById('dudu').classList.add('show');
+            document.getElementById('page1').classList.add('active');
             startDecorations();
         }, 1000);
 
-        // 2. Function to create falling decorations
+        // Function to smoothly transition between pages
+        function goToPage(pageNumber) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Show the target page after a tiny delay to allow fade out
+            setTimeout(() => {
+                document.getElementById('page' + pageNumber).classList.add('active');
+            }, 100); 
+        }
+
+        // Special function for the gift opening animation on Page 2
+        function openGift() {
+            const giftImg = document.getElementById('dudu-gift');
+            const textBox2 = document.getElementById('text-box-2');
+            
+            // 1. Shrink and fade the gift and text box
+            giftImg.classList.add('shrink');
+            textBox2.style.opacity = '0';
+
+            // 2. Wait for shrink animation to finish (1 second), then transition to Page 3
+            setTimeout(() => {
+                // Hide page 2 completely
+                document.getElementById('page2').classList.remove('active');
+                
+                // Show page 3
+                const page3 = document.getElementById('page3');
+                page3.classList.add('active');
+                
+                // Add flash effect to the newly revealed image
+                const revealImg = document.getElementById('reveal-img');
+                revealImg.classList.add('flash');
+                
+                // Remove flash class after it plays so it doesn't get stuck
+                setTimeout(() => {
+                    revealImg.classList.remove('flash');
+                }, 500);
+
+            }, 1000); // 1000ms matches the CSS transition time
+        }
+
+        // Confetti function (same as before)
         function startDecorations() {
             const colors = ['#ff69b4', '#ffd700', '#ff4500', '#ffffff', '#ffb6c1'];
             
-            // Generate a new decoration every 50 milliseconds
             const decorationInterval = setInterval(() => {
                 const shape = document.createElement('div');
                 shape.classList.add('decoration');
                 
-                // Randomize size, color, starting position, and falling speed
-                const size = Math.random() * 15 + 10; // Between 10px and 25px
+                const size = Math.random() * 15 + 10;
                 shape.style.width = size + 'px';
                 shape.style.height = size + 'px';
                 shape.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 shape.style.left = Math.random() * 100 + 'vw';
                 
-                // Make half of them circles, half squares
                 if (Math.random() > 0.5) shape.style.borderRadius = '50%';
                 
-                // Randomize fall duration between 2 and 3 seconds
                 const fallDuration = Math.random() * 1 + 2; 
                 shape.style.animationDuration = fallDuration + 's';
                 
                 document.body.appendChild(shape);
 
-                // Clean up the DOM element after it falls
                 setTimeout(() => shape.remove(), fallDuration * 1000);
             }, 50);
 
-            // 3. Stop generating new decorations after 3 seconds (3000ms)
             setTimeout(() => {
                 clearInterval(decorationInterval);
             }, 3000);
